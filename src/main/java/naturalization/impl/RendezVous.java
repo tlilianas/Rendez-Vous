@@ -9,7 +9,10 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -25,21 +28,32 @@ public class RendezVous{
     final String baseUrl = "http://www.val-de-marne.gouv.fr/booking/create/4963/1";
 
     WebDriver driver;
+    List<String> countersList;
+    int randomNumber;
+
 
     public RendezVous() throws IOException, BookingPageLoadingException {
         driver = new HtmlUnitDriver();
         driver.get(baseUrl);
         handleBan(driver);
+        initiateCounterList();
         testCalendarAvailability();
         //we're done, close the drive
         driver.close();
 
     }
 
+    private void initiateCounterList() {
+        countersList = new ArrayList<>();
+        countersList.add("planning5955");
+        countersList.add("planning5968");
+        countersList.add("planning5973");
+    }
+
 
     public void testCalendarAvailability() throws IOException, BookingPageLoadingException{
 
-        selectCounter(By.id("planning5955"));
+        selectCounter(By.id(getRandomCounter()));
 
         By confirm = By.name("nextButton");
         driver.findElement(confirm).click();
@@ -75,6 +89,8 @@ public class RendezVous{
         FileWriter eventWriter = new FileWriter("rendezVousLog.csv", true);
 
         eventWriter.append(event);
+        eventWriter.append(",");
+        eventWriter.append(Integer.toString(randomNumber));
         eventWriter.append("\n");
 
         eventWriter.flush();
@@ -95,6 +111,7 @@ public class RendezVous{
         if(!driver.getTitle().equals(PAGE_TITLE)){
             if(driver.getTitle().equals("502 Bad Gateway")){
                 //log temporary ban event and sleep for 3min
+                logger.warning(TEMPORARY_BANNED);
                 driver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
                 try {
                     updateEventFile(TEMPORARY_BANNED + ", " + getFormattedCurrentDate());
@@ -105,9 +122,18 @@ public class RendezVous{
         }
     }
 
+    private String getRandomCounter(){
+        randomNumber = new Random().nextInt(3);
+        System.out.println(randomNumber);
+        logger.warning("Selected counter : " + countersList.get(randomNumber));
+        return countersList.get(randomNumber);
+    }
+
     private String getFormattedCurrentDate(){
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
         Date currentDate = new Date(System.currentTimeMillis());
         return formatter.format(currentDate);
     }
+
+
 }

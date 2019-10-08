@@ -10,7 +10,7 @@ public final class Constants {
 
     public static final String PAGE_TITLE = "Prise de rendez-vous au titre de la naturalisation - Les services de l'État dans le Val de Marne";
     public static final String ATTEMPT_EVENT_FAILURE = "Failure, ";
-    public static final String ATTEMPT_EVENT_SUCCESS = "Failure, ";
+    public static final String ATTEMPT_EVENT_SUCCESS = "Success, ";
     public static final String NO_TIME_RANGE_AVAILABLE = "Il n'existe plus de plage horaire libre";
     public static final String NO_APPOINTMENT_AVAILABLE = "No appointment available :(";
     public static final String APPOINTMENT_AVAILABLE = "Appointment available !";
