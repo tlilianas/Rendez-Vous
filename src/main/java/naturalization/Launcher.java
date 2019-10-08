@@ -2,6 +2,7 @@ package naturalization;
 
 import naturalization.exceptions.BookingPageLoadingException;
 import naturalization.impl.RendezVous;
+import naturalization.impl.SendEmail;
 
 import java.io.IOException;
 

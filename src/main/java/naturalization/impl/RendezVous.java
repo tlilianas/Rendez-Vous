@@ -73,6 +73,7 @@ public class RendezVous{
                 //booking create form does exist with a different content, it's probably an updated calendar
                 //log the event and send e-mail.
                 updateEventFile(ATTEMPT_EVENT_SUCCESS + getFormattedCurrentDate());
+                SendEmail.SendEmail();
             }
         }catch (NoSuchElementException noSuchElementException){
             logger.warning(APPOINTMENT_AVAILABLE);
