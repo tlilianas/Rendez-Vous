@@ -1,6 +1,6 @@
 # Rendez-Vous
 
-Aux urmes citoyens !
+Aux armes citoyens !
 
            (Â¯)
            | |BBBBBBBBBBBBBBB---------------RRRRRRRRRRRRRRRRRR|
