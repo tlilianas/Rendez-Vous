@@ -25,38 +25,34 @@ public class RendezVous{
     Logger logger = Logger.getLogger(RendezVous.class.getName());
 
 
-    final String baseUrl = "http://www.val-de-marne.gouv.fr/booking/create/4963/1";
+    final String baseUrl = "http://www.seine-saint-denis.gouv.fr/booking/create/1194/0";
 
     WebDriver driver;
-    List<String> countersList;
-    int randomNumber;
 
 
     public RendezVous() throws IOException, BookingPageLoadingException {
         driver = new HtmlUnitDriver();
         driver.get(baseUrl);
         handleBan(driver);
-        initiateCounterList();
         testCalendarAvailability();
         //we're done, close the drive
         driver.close();
 
     }
 
-    private void initiateCounterList() {
-        countersList = new ArrayList<>();
-        countersList.add("planning5955");
-        countersList.add("planning5968");
-        countersList.add("planning5973");
-    }
-
 
     public void testCalendarAvailability() throws IOException, BookingPageLoadingException{
+        //if for any reason we dosent land on the welcome page, halt.
+        if(!baseUrl.equals(driver.getCurrentUrl())){
+            throw new BookingPageLoadingException(CANT_LOAD_THE_WELCOME_PAGE);
+        }
 
-        selectCounter(By.id(getRandomCounter()));
+        // agree to condition and terms ;P
+        By condition = By.name("condition");
+        driver.findElement(condition).click();
 
-        By confirm = By.name("nextButton");
-        driver.findElement(confirm).click();
+        By goToBookingPage = By.name("nextButton");
+        driver.findElement(goToBookingPage).click();
 
         //page successfully changed
         if(!BOOKING_PAGE_URL.equals(driver.getCurrentUrl())){
@@ -86,24 +82,13 @@ public class RendezVous{
     }
 
     private void updateEventFile(String event) throws IOException {
-        FileWriter eventWriter = new FileWriter("rendezVousLog.csv", true);
+        FileWriter eventWriter = new FileWriter("rendezVousLog_93.csv", true);
 
         eventWriter.append(event);
-        eventWriter.append(",");
-        eventWriter.append(Integer.toString(randomNumber));
         eventWriter.append("\n");
 
         eventWriter.flush();
         eventWriter.close();
-    }
-
-    private void selectCounter(By id) {
-        By counter1 = id;
-        try {
-            driver.findElement(counter1).click();
-        }catch(Exception ex){
-            logger.warning("Cant select the right counter");
-        }
     }
 
     //make sure we are not banned or blacklisted by the webserver
@@ -120,13 +105,6 @@ public class RendezVous{
                 }
             }
         }
-    }
-
-    private String getRandomCounter(){
-        randomNumber = new Random().nextInt(3);
-        System.out.println(randomNumber);
-        logger.warning("Selected counter : " + countersList.get(randomNumber));
-        return countersList.get(randomNumber);
     }
 
     private String getFormattedCurrentDate(){

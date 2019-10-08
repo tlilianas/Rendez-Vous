@@ -5,8 +5,9 @@ public final class Constants {
     private Constants(){}
 
     public static final String CANT_OPEN_LOG_EVENT_FILE = "Cant open log event file.";
-    public static final String BOOKING_PAGE_URL = "http://www.val-de-marne.gouv.fr/booking/create/4963/2";
+    public static final String BOOKING_PAGE_URL = "http://www.seine-saint-denis.gouv.fr/booking/create/1194/2";
     public static final String CANT_LOAD_THE_BOOKING_PAGE = "Cant load the booking page.";
+    public static final String CANT_LOAD_THE_WELCOME_PAGE = "Cant load the welcome page.";
 
     public static final String PAGE_TITLE = "Prise de rendez-vous au titre de la naturalisation - Les services de l'État dans le Val de Marne";
     public static final String ATTEMPT_EVENT_FAILURE = "Failure, ";
